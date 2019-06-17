@@ -41,6 +41,20 @@ public class SavePicTask extends Thread {
         this.isBackCamera = isBackCamera;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void run() {
         super.run();

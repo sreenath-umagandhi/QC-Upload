@@ -3,6 +3,7 @@ package com.jianjin.customcamera;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,7 +29,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.jianjin.camera.utils.FileUtils;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -52,6 +57,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PicActivity extends Activity implements ProgressRequestBody.UploadCallbacks {
 
@@ -60,7 +66,11 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
     Handler myHandler;
     String Result;
     String Confidence;
+    String fileName;
     ApiService apiService;
+    ApiService2 apiService2;
+
+    ApiService3 apiService3;
     LocationManager mLocationManager;
 
 
@@ -78,11 +88,11 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
       //  final TextView t6 = (TextView) findViewById(R.id.textView);
       //  t6.setText("Click Upload & Please Wait!");
       //  t6.setVisibility(View.VISIBLE);
-        ImageView imageView = (ImageView) findViewById(R.id.image_view);
 
 
 
 
+        final ImageView imageView = (ImageView) findViewById(R.id.image_view);
         final String imgPath = getIntent().getStringExtra("imgUri");
         final Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
 
@@ -90,9 +100,10 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
         final Uri sampleUri = Uri.parse(imgPath);
         //Bitmap newResolution = getResizedBitmap(bitmap);
 
+
         imageView.setImageBitmap(bitmap);
-        Button fabUpload = (Button) findViewById(R.id.fabUpload);
-        Button button = (Button) findViewById(R.id.button);
+        final Button fabUpload = (Button) findViewById(R.id.fabUpload);
+        final Button button = (Button) findViewById(R.id.button);
         fabUpload.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -101,6 +112,12 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
                 //t6.setText("Please wait...");
 
                 multipartImageUpload(bitmap);
+
+                fabUpload.setVisibility(View.GONE);
+                button.setVisibility(View.GONE);
+
+                finish();
+              //  startActivity(getIntent());
 
 
 
@@ -115,6 +132,7 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
                 //t6.setText("Please wait...");
 
                 multipartImageUpload1(bitmap);
+                finish();
 
 
 
@@ -137,7 +155,7 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
        // t6.setText("Please wait...");
         //t6.setVisibility(View.VISIBLE);
 
-        initRetrofitClient();
+        initRetrofitClient1();
         try {
 
             String mParentFilePath = FileUtils.getPhotoPathForLockWallPaper();
@@ -175,7 +193,7 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
             MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), fileBody);
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-            Call<ResponseBody> req = apiService.uploadImage(body,name);
+            Call<ResponseBody> req = apiService3.uploadImage(body,name);
             req.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -191,8 +209,86 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
                 }
             });
 
+
+
+
+/*
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
+            RequestBody name = RequestBody.create(MediaType.parse("application/json"), "file");
+
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+
+
+
+           // Call<ResponseBody> req = apiService.uploadImage(body,name);
+            Call<MyResponse> req = apiService.uploadImage(body,name);
+
+
+            req.enqueue(new Callback<MyResponse>() {
+                @Override
+                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                    Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
+                    ImageView imageView = (ImageView) findViewById(R.id.image_view);
+                    MyResponse obj = response.body();
+                    Log.e("TAG","Path"+ obj.im_path);
+                    String subString = obj.im_path;
+                    fileName = subString.substring(subString.lastIndexOf("/") + 1);
+                    Picasso.get().load("http://10.50.2.119:5000/classified/"+fileName).into(imageView);
+                    imageView.setVisibility(View.VISIBLE);
+
+
+                 //   Log.e("TAG", "response 33: "+response.headers().toString());
+                  //  Log.e("TAG", "response 33: "+response.body());
+                   // Log.e("TAG", "response 33: "+response.toString());
+                    Log.e("TAG", "response 33: "+new Gson().toJson(response.body()));
+                    Log.e("TAG", "response 33: "+ response.raw().toString());
+                  //  Log.e("TAG", "response 33: "+new Gson().toJson(response));
+
+
+                }
+
+
+                @Override
+                public void onFailure(Call<MyResponse> call, Throwable t) {
+                    //  textView.setText("Uploaded Failed!");
+                    //  textView.setTextColor(Color.RED);
+                    Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+*/
+            /*
+            OkHttpClient client = new OkHttpClient.Builder().build();
+            apiService3 = new Retrofit.Builder().baseUrl("http://10.50.2.119:5000").client(client).build().create(ApiService3.class);
+
+            Call call = apiService3.getData();
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
+                    Log.e("TAG", "response 33: "+new Gson().toJson(response.body()) );
+                }
+
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    //  textView.setText("Uploaded Failed!");
+                    //  textView.setTextColor(Color.RED);
+                    Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+**/
+
+
             //post delay
 //fetchResult();
+
+
 
 
 
@@ -209,7 +305,7 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
         // t6.setText("Please wait...");
         //t6.setVisibility(View.VISIBLE);
 
-        initRetrofitClient();
+        initRetrofitClient2();
         try {
 
             String mParentFilePath = FileUtils.getPhotoPathForLockWallPaper();
@@ -220,7 +316,7 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
                     new Date()).toString()
                     + ".jpg";
             //   Bitmap bitmap1 = getResizedBitmap(bitmap);
-            //   Bitmap bitmap1 = Bitmap.createScaledBitmap(bitmap,720,960,true);
+             //    Bitmap bitmap1 = Bitmap.createScaledBitmap(bitmap,960,720,true);
 
 
 
@@ -244,10 +340,10 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
             // textView.setTextColor(Color.BLUE);
 
             RequestBody fileBody = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("upload1", file.getName(), fileBody);
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload1");
+            MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), fileBody);
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-            Call<ResponseBody> req = apiService.uploadImage(body,name);
+            Call<ResponseBody> req = apiService2.uploadImage(body,name);
             req.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -352,12 +448,12 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
         }
         catch (SQLException se)
         {
-            Log.e("safiya", se.getMessage());
+            Log.e("SQLException", se.getMessage());
         }
         catch (ClassNotFoundException e) {
         }
         catch (Exception e) {
-            Log.e("error", e.getMessage());
+            Log.e("3RR03", e.getMessage());
         }
 
     }
@@ -379,9 +475,33 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
 
     private void initRetrofitClient() {
         OkHttpClient client = new OkHttpClient.Builder().build();
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
 
         //change the ip to yours.
-        apiService = new Retrofit.Builder().baseUrl("http://10.50.0.70:3000").client(client).build().create(ApiService.class);
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://10.50.2.119:5000").addConverterFactory(GsonConverterFactory.create(gson)).build();
+        apiService = retrofit.create(ApiService.class);
+    }
+
+    private void initRetrofitClient1() {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+
+        //change the ip to yours.
+        apiService3 = new Retrofit.Builder().baseUrl("http://10.50.0.70:3000").client(client).build().create(ApiService3.class);
+    }
+
+    private void initRetrofitClient2() {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+
+        //change the ip to yours.
+        apiService2 = new Retrofit.Builder().baseUrl("http://10.50.0.70:3000").client(client).build().create(ApiService2.class);
+    }
+
+    private void getJson(){
+       // OkHttpClient client = new OkHttpClient.Builder().build();
+        //apiService3 = new Retrofit.Builder().baseUrl("http://10.50.2.119:5000").client(client).build().create(ApiService3.class);
+
     }
 
     @Override

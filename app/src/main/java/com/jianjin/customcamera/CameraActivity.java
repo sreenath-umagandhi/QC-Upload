@@ -50,7 +50,7 @@ public class CameraActivity extends Activity implements ISavePicCallback {
     private CameraManager mCameraManager;
     private CameraContainer cameraContainer;
     private int REQUEST_PICTURE = 2;
-    private TextView flash;
+    private ImageView flash;
     private ImageView picture;
     private TextView mSwitch;
     private ImageView mTakePictureBtn;
@@ -77,7 +77,7 @@ public class CameraActivity extends Activity implements ISavePicCallback {
 
     private void initView() {
         cameraContainer = (CameraContainer) findViewById(R.id.camera_container);
-        flash = (TextView) findViewById(R.id.camera_tv_light);
+        flash = (ImageView) findViewById(R.id.camera_tv_light);
         picture = (ImageView) findViewById(R.id.camera_iv_picture);
         mSwitch = (TextView) findViewById(R.id.camera_tv_switch);
         mTakePictureBtn = (ImageView) findViewById(R.id.camera_iv_take);

@@ -6,6 +6,7 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jianjin.camera.CameraDirection;
@@ -37,7 +38,7 @@ public class CameraManager {
     private Context mContext;
     private CameraDirection mCameraDirection;
     private FlashLightStatus mFlashLightStatus;
-    private TextView mTvFlashLight;
+    private ImageView mTvFlashLight;
     private TextView mTvCameraDirection;
     private PreviewLightCallback previewLightCallback;
 
@@ -69,7 +70,7 @@ public class CameraManager {
      * @param tvFlashLight
      * @param tvCameraDirection
      */
-    public void bindOptionMenuView(TextView tvFlashLight, TextView tvCameraDirection,
+    public void bindOptionMenuView(ImageView tvFlashLight, TextView tvCameraDirection,
                                    @Nullable String[] flashHint, @Nullable String[] cameraDireHint) {
         mTvFlashLight = tvFlashLight;
         mTvCameraDirection = tvCameraDirection;
@@ -111,7 +112,7 @@ public class CameraManager {
         this.mFlashLightStatus = mFlashLightStatus;
         if (mTvFlashLight != null) {
             if (flashHint != null) {
-                mTvFlashLight.setText(flashHint[mFlashLightStatus.ordinal()]);
+               // mTvFlashLight.setText(flashHint[mFlashLightStatus.ordinal()]);
             }
             mTvFlashLight.setSelected(mFlashLightStatus == FlashLightStatus.LIGHT_ON);
             // 设置各种状态图片
@@ -190,7 +191,7 @@ public class CameraManager {
                 public void cameraLight(boolean isDarkEnv) {
                     // 亮度过暗显示开灯按钮
                     if (getCameraDirection() == CameraDirection.CAMERA_BACK) {
-                        if (isDarkEnv || getFlashLightStatus() == FlashLightStatus.LIGHT_ON) {
+                        if (isDarkEnv || !isDarkEnv || getFlashLightStatus() == FlashLightStatus.LIGHT_ON) {
                             if (mTvFlashLight.getVisibility() != View.VISIBLE) {
                                 mTvFlashLight.setVisibility(View.VISIBLE);
                             }
@@ -270,7 +271,8 @@ public class CameraManager {
 
         try {
             Camera.Size adapterSize = findFitPicResolution(camera, bl);
-            parameters.setPictureSize(720, 960);
+            parameters.setPictureSize(4128, 3096);
+
             camera.setParameters(parameters);
 
             Logger.info(TAG, "setFitPicSize:" + adapterSize.width + "*" + adapterSize.height);
@@ -289,7 +291,7 @@ public class CameraManager {
 
         try {
             Camera.Size adapterSize = findFitPreResolution(camera);
-            parameters.setPreviewSize(960, 720);
+            parameters.setPreviewSize(4128, 3096);
             camera.setParameters(parameters);
 
             Logger.info(TAG, "setFitPreSize:" + adapterSize.width + "*" + adapterSize.height);

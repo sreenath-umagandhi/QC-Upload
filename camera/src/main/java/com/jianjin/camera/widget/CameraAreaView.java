@@ -72,7 +72,7 @@ public class CameraAreaView extends View {
         // Top Right
         canvas.drawRect(width - 280, 0, width,
                 cornerWidth, mPaint1);
-        canvas.drawRect(width - cornerWidth, 0, width, cornerLength, mPaint);
+        canvas.drawRect(width - cornerWidth, 0, width, cornerLength, mPaint1);
 
         // Bottom Left
         canvas.drawRect(0, height - cornerLength, cornerWidth,

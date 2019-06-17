@@ -119,7 +119,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         adjustView(adapterSize);
 
         determineDisplayOrientation();
-
+        int minExp = mCamera.getParameters().getMinExposureCompensation();
+        int maxExp =  mCamera.getParameters().getMaxExposureCompensation();
         mCamera.startPreview();
         turnLight(mCameraManager.getFlashLightStatus());  //设置闪光灯
     }

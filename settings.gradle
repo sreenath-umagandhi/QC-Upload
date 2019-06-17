@@ -1,2 +1,2 @@
-include ':app', ':camera', ':jtds-1.3.0'
+include ':app', ':camera', ':jtds-1.3.0', ':barcode-reader'
 

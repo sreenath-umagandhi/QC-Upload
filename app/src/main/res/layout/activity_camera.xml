@@ -29,24 +29,12 @@
     <com.jianjin.camera.widget.CameraAreaView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="610dp"
+        android:layout_marginBottom="310dp"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="70dp"
-        android:layout_marginTop="610dp" />
+        android:layout_marginTop="200dp" />
 
-    <TextView
-        android:id="@+id/camera_tv_light"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="120dp"
-        android:drawableBottom="@drawable/camera_light_selector"
-        android:drawablePadding="15dp"
-        android:gravity="center_horizontal"
-        android:text="Can't see? Turn on light"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        android:visibility="gone" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -70,6 +58,20 @@
             android:background="@drawable/camera_ic_take" />
 
         <ImageView
+            android:id="@+id/camera_tv_light"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+
+            android:layout_centerVertical="true"
+            android:layout_marginStart="265dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="190dp"
+            android:layout_marginBottom="120dp"
+            android:layout_toEndOf="@+id/camera_tv_switch"
+            android:background="@drawable/camera_light_selector"
+            android:visibility="visible" />
+
+        <ImageView
             android:id="@+id/camera_iv_picture"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -84,6 +86,7 @@
             android:layout_height="250dp"
             android:layout_centerInParent="true"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
     </RelativeLayout>
 </FrameLayout>
