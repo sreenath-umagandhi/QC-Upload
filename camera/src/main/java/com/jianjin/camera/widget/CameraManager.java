@@ -271,7 +271,7 @@ public class CameraManager {
 
         try {
             Camera.Size adapterSize = findFitPicResolution(camera, bl);
-            parameters.setPictureSize(4128, 3096);
+            parameters.setPictureSize(adapterSize.width, adapterSize.height);
 
             camera.setParameters(parameters);
 
@@ -291,7 +291,7 @@ public class CameraManager {
 
         try {
             Camera.Size adapterSize = findFitPreResolution(camera);
-            parameters.setPreviewSize(4128, 3096);
+            parameters.setPreviewSize(adapterSize.width, adapterSize.height);
             camera.setParameters(parameters);
 
             Logger.info(TAG, "setFitPreSize:" + adapterSize.width + "*" + adapterSize.height);

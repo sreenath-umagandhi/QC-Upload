@@ -141,9 +141,10 @@ public class CameraActivity extends Activity implements ISavePicCallback {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED
                 && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                && grantResults[2] == PackageManager.PERMISSION_GRANTED) {  //如果用户赋予权限，则调用相机
+                && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+
             cameraContainer.bindActivity(CameraActivity.this);
-        } else { //未赋予权限，则做出对应提示
+        } else {
         }
     }
 
@@ -151,9 +152,7 @@ public class CameraActivity extends Activity implements ISavePicCallback {
     protected void onActivityResult(int req, int res, Intent data) {
         if (res == RESULT_OK) {
             try {
-                /**
-                 * 该uri是上一个Activity返回的
-                 */
+
                  uri = data.getData();
 
 
@@ -172,6 +171,7 @@ public class CameraActivity extends Activity implements ISavePicCallback {
                     Intent intent = new Intent(CameraActivity.this, PicActivity.class);
                    // multipartImageUpload(uri);
                     intent.putExtra("imgUri", UriUtils.getPath(CameraActivity.this, uri));
+                    cameraContainer.bindActivity(CameraActivity.this);
                     startActivity(intent);
                 }
 

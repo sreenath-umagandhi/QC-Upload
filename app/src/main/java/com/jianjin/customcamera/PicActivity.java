@@ -104,6 +104,8 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
         imageView.setImageBitmap(bitmap);
         final Button fabUpload = (Button) findViewById(R.id.fabUpload);
         final Button button = (Button) findViewById(R.id.button);
+        final Button button1 = (Button) findViewById(R.id.buttonBack);
+        multipartImageUpload(bitmap);
         fabUpload.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -111,12 +113,12 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
                 // cameraContainer.takePicture(CameraActivity.this);
                 //t6.setText("Please wait...");
 
-                multipartImageUpload(bitmap);
+                //multipartImageUpload(bitmap);
 
                 fabUpload.setVisibility(View.GONE);
                 button.setVisibility(View.GONE);
 
-                finish();
+               // finish();
               //  startActivity(getIntent());
 
 
@@ -139,6 +141,21 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
             }
         });
 
+        button1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // cameraContainer.takePicture(CameraActivity.this);
+                //t6.setText("Please wait...");
+
+                Intent cameraz = new Intent(PicActivity.this, CameraActivity.class);
+                startActivity(cameraz);
+
+
+
+            }
+        });
+
        // t6.setText("Please wait!");
        // t6.setVisibility(View.VISIBLE);
         // multipartImageUpload(sampleUri);
@@ -155,7 +172,7 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
        // t6.setText("Please wait...");
         //t6.setVisibility(View.VISIBLE);
 
-        initRetrofitClient1();
+        initRetrofitClient();
         try {
 
             String mParentFilePath = FileUtils.getPhotoPathForLockWallPaper();
@@ -188,7 +205,7 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
             fos.close();
 
             // textView.setTextColor(Color.BLUE);
-
+/*
             RequestBody fileBody = RequestBody.create(MediaType.parse("image/*"), file);
             MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), fileBody);
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
@@ -209,10 +226,10 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
                 }
             });
 
+*/
 
 
 
-/*
             RequestBody fileBody = RequestBody.create(MediaType.parse("image/*"), file);
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
             RequestBody name = RequestBody.create(MediaType.parse("application/json"), "file");
@@ -232,19 +249,22 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                     Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
                     ImageView imageView = (ImageView) findViewById(R.id.image_view);
+                    final Button button1 = (Button) findViewById(R.id.buttonBack);
                     MyResponse obj = response.body();
                     Log.e("TAG","Path"+ obj.im_path);
                     String subString = obj.im_path;
                     fileName = subString.substring(subString.lastIndexOf("/") + 1);
-                    Picasso.get().load("http://10.50.2.119:5000/classified/"+fileName).into(imageView);
+                    Picasso.get().load("http://10.50.2.111:5000/classified/"+fileName).into(imageView);
                     imageView.setVisibility(View.VISIBLE);
+                    button1.setVisibility(View.VISIBLE);
+
 
 
                  //   Log.e("TAG", "response 33: "+response.headers().toString());
                   //  Log.e("TAG", "response 33: "+response.body());
                    // Log.e("TAG", "response 33: "+response.toString());
-                    Log.e("TAG", "response 33: "+new Gson().toJson(response.body()));
-                    Log.e("TAG", "response 33: "+ response.raw().toString());
+                    Log.e("TAG", "Response 33: "+new Gson().toJson(response.body()));
+                    Log.e("TAG", "Response 33: "+ response.raw().toString());
                   //  Log.e("TAG", "response 33: "+new Gson().toJson(response));
 
 
@@ -259,7 +279,7 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
                     t.printStackTrace();
                 }
             });
-*/
+
             /*
             OkHttpClient client = new OkHttpClient.Builder().build();
             apiService3 = new Retrofit.Builder().baseUrl("http://10.50.2.119:5000").client(client).build().create(ApiService3.class);
@@ -480,7 +500,7 @@ public class PicActivity extends Activity implements ProgressRequestBody.UploadC
                 .create();
 
         //change the ip to yours.
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://10.50.2.119:5000").addConverterFactory(GsonConverterFactory.create(gson)).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://10.50.2.111:5000").addConverterFactory(GsonConverterFactory.create(gson)).build();
         apiService = retrofit.create(ApiService.class);
     }
 

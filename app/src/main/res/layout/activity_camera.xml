@@ -16,7 +16,8 @@
         android:layout_width="40dp"
         android:layout_height="50dp"
         android:padding="15dp"
-        android:src="@drawable/camera_ic_back" />
+        android:src="@drawable/camera_ic_back"
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/camera_iv_history"
@@ -24,7 +25,8 @@
         android:layout_height="50dp"
         android:layout_gravity="right"
         android:padding="15dp"
-        android:src="@drawable/camera_ic_history" />
+        android:src="@drawable/camera_ic_history"
+        android:visibility="invisible" />
 
     <com.jianjin.camera.widget.CameraAreaView
         android:layout_width="match_parent"
@@ -48,26 +50,28 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="45dp"
-            android:background="@drawable/camera_ic_switch" />
+            android:background="@drawable/camera_ic_switch"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/camera_iv_take"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
+            android:layout_width="71dp"
+            android:layout_height="64dp"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="220dp"
             android:background="@drawable/camera_ic_take" />
 
         <ImageView
             android:id="@+id/camera_tv_light"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
 
             android:layout_centerVertical="true"
-            android:layout_marginStart="265dp"
+            android:layout_marginStart="350dp"
             android:layout_marginTop="55dp"
             android:layout_marginEnd="190dp"
             android:layout_marginBottom="120dp"
-            android:layout_toEndOf="@+id/camera_tv_switch"
             android:background="@drawable/camera_light_selector"
             android:visibility="visible" />
 
@@ -78,7 +82,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="45dp"
-            android:background="@drawable/camera_ic_picture" />
+            android:background="@drawable/camera_ic_picture"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageView"

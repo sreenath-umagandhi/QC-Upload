@@ -119,6 +119,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         adjustView(adapterSize);
 
         determineDisplayOrientation();
+
         int minExp = mCamera.getParameters().getMinExposureCompensation();
         int maxExp =  mCamera.getParameters().getMaxExposureCompensation();
         mCamera.startPreview();
@@ -186,15 +187,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
      * accordingly
      */
     private void determineDisplayOrientation() {
-        if (mActivity == null) {
-            throw new IllegalStateException("please bind activity");
-        }
+
+        //if (mActivity == null) {
+        //    throw new IllegalStateException("please bind activity");
+       // }
 
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         Camera.getCameraInfo(mCameraId.ordinal(), cameraInfo);
 
 
-        int rotation = mActivity.getWindowManager().getDefaultDisplay().getRotation();
+        int rotation = 0;
+                //mActivity.getWindowManager().getDefaultDisplay().getRotation();
         int degrees = 0;
 
         switch (rotation) {
